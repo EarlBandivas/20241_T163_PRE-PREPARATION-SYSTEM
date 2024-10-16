@@ -8,7 +8,10 @@ and management of budget across different departments,
 ensuring that resources are distributed according to priorities
 
 
-Lumapaca, Junry 
+Lumapaca, Junry
+
 Bandivas, Earl Efraim J.
+
 Balintongog, Jessie Lou B.
+
 Yaba, David Seth P.
