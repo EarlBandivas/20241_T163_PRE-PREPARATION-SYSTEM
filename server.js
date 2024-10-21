@@ -30,3 +30,6 @@ app.get('/budgets/:id', (req, res) => {
   res.status(200).json(budget);
 });
 
+app.listen(PORT, () => {
+  console.log(Server is running on http://localhost:${PORT});
+});
