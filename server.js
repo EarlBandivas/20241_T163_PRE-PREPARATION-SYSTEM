@@ -9,10 +9,27 @@ const PORT = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-let budgets = [];
-let forecasts = [];
-let users = [];
 
+
+
+
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+app.post('/budgets', (req, res) => {
+  const newBudget = { id: budgets.length + 1, ...req.body };
+  budgets.push(newBudget);
+  res.status(201).json(newBudget);
+});
+
+app.get('/budgets', (req, res) => {
+  res.status(200).json(budgets);
+});
+
+app.get('/budgets/:id', (req, res) => {
+  res.status(200).json(budget);
+});
 
 app.post('/budgets', (req, res) => {
   const newBudget = { id: budgets.length + 1, ...req.body };
