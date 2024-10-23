@@ -2,15 +2,6 @@
 const express = require('express');
 const router = express.Router();
 
-let users = [];
-
-// Create User
-router.post('/', (req, res) => {
-  const newUser = { id: users.length + 1, ...req.body };
-  users.push(newUser);
-  res.status(201).json(newUser);
-});
-
 // Retrieve User Permissions
 router.get('/:id', (req, res) => {
   const user = users.find((u) => u.id === parseInt(req.params.id));
