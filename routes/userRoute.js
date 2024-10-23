@@ -6,7 +6,6 @@ let preReports = [];
 
 
 router.post('/login', (req, res) => {
-  // Implement your login logic (authentication) here
   res.status(200).json({ message: 'User logged in successfully' });
 });
 
