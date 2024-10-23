@@ -3,47 +3,28 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+const adminRoutes = require('./adminRoutes');
+const userRoutes = require('./userRoutes');
+
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-  res.send('Hello World');
+
+app.use((req, res, next) => {
+  
+  req.user = { id: 1 }; // Simulated user ID
+  next();
 });
 
-app.post('/budgets', (req, res) => {
-  const newBudget = { id: budgets.length + 1, ...req.body };
-  budgets.push(newBudget);
-  res.status(201).json(newBudget);
-});
+// Admin Routes
+app.use('/admin', adminRoutes);
 
-app.get('/budgets', (req, res) => {
-  res.status(200).json(budgets);
-});
-
-app.get('/budgets/:id', (req, res) => {
-  res.status(200).json(budget);
-});
-
-app.post('/budgets', (req, res) => {
-  const newBudget = { id: budgets.length + 1, ...req.body };
-  budgets.push(newBudget);
-  res.status(201).json(newBudget);
-});
-
-app.get('/budgets', (req, res) => {
-  res.status(200).json(budgets);
-});
-
-app.get('/budgets/:id', (req, res) => {
-  const budget = budgets.find((b) => b.id === parseInt(req.params.id));
-  if (!budget) return res.status(404).send('Budget not found.');
-  res.status(200).json(budget);
-});
+// User Routes
+app.use('/user', userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-
