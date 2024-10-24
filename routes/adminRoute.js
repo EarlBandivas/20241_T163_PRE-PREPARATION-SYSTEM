@@ -39,6 +39,7 @@ router.get('/budgets', (req, res) => {
   res.status(200).json(budgets);
 });
 
+// admin view the submitted budgets
 router.get('/budgets/:id', (req, res) => {
   const budget = budgets.find((b) => b.id === parseInt(req.params.id));
   if (!budget) return res.status(404).send('Budget not found.');
