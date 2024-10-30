@@ -8,7 +8,7 @@ and management of budget across different departments,
 ensuring that resources are distributed according to priorities
 
 
-Lumapaca, Junry
+Lumapac, Junry
 
 Bandivas, Earl Efraim J.
 
