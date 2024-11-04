@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const adminRoutes = require('./adminRoutes');
 const userRoutes = require('./userRoutes');
+const { default: mongoose } = require('mongoose');
 
 const app = express();
 const PORT = 3000;
@@ -22,7 +23,17 @@ app.use('/admin', adminRoutes);
 
 // User Routes
 app.use('/user', userRoutes);
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+
+//DB connection
+mongoose
+.connect('mongod://127.0.0.1:27017/PRE')
+.then(() => {
+    console.log('successfuly connected');
+   app.listen(PORT, () => {
+   console.log(`Server is running on http://localhost:${PORT}`);
 });
+})
+
+
+
  
