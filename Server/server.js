@@ -24,6 +24,7 @@ app.use('/admin', adminRoutes);
 // User Routes
 app.use('/user', userRoutes);
 
+//DB connection
 mongoose
 .connect('mongod://127.0.0.1:27017/PRE')
 .then(() => {
