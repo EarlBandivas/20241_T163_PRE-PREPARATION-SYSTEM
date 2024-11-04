@@ -34,10 +34,10 @@ function SignIn() {
             </Typography>
           </CardHeader>
           <CardBody className='flex flex-col gap-4'>
-            <Input label='Email' size='lg' />
-            <Input label='Password' size='lg' />
-            <div className='-ml-2.5'>
-              <Checkbox label='Remember Me' />
+            <Input label='Email' size='lg' color='blue' />
+            <Input label='Password' size='lg' color='blue' />
+            <div className='-ml-2.5' color='blue'>
+              <Checkbox label='Remember Me' color='blue' />
             </div>
           </CardBody>
           <CardFooter className='pt-1 '>
@@ -48,7 +48,7 @@ function SignIn() {
               <Button
                 size='sm'
                 variant='outlined'
-                color='blue-gray'
+                color='blue'
                 className='flex justify-center items-center gap-3 '
                 fullWidth
               >

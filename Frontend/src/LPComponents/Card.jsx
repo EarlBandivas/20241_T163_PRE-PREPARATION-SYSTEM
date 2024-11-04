@@ -36,7 +36,7 @@ function Cards() {
           </Typography>
         </CardBody>
         <CardFooter className='pt-0'>
-          <Button>Contact Us</Button>
+          <Button color='blue'>Contact Us</Button>
         </CardFooter>
       </Card>
       <Card className='mt-6 w-96'>
@@ -60,7 +60,7 @@ function Cards() {
           </Typography>
         </CardBody>
         <CardFooter className='pt-0'>
-          <Button>Contact Us</Button>
+          <Button color='blue'>Contact Us</Button>
         </CardFooter>
       </Card>
       <Card className='mt-6 w-96 '>
@@ -84,7 +84,7 @@ function Cards() {
           </Typography>
         </CardBody>
         <CardFooter className='pt-0'>
-          <Button>Contact Us</Button>
+          <Button color='blue'>Contact Us</Button>
         </CardFooter>
       </Card>
     </div>
