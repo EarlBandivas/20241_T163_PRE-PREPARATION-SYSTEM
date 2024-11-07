@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from '../assets/Buksu.png';
+import Logo from '../assets/BuksuLogo.png';
 import {
   Card,
   CardHeader,
@@ -19,7 +19,7 @@ function SignIn() {
     >
       <div className='  border-blue-400 flex justify-center '>
         <div>
-          <img className='w-full h-110   rounded-lg ' src='' alt='' />
+          <img className='w-full h-full   rounded-lg ' src={Logo} alt='' />
         </div>
       </div>
       <div className='md: pt-28 md: flex justify-center'>
