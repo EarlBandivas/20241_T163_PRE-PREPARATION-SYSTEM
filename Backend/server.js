@@ -1,39 +1,27 @@
-// server.js
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import userRoute from './routes/userRoute.js'; // Import user routes
+import adminRoute from './routes/adminRoute.js'; // Import admin routes
 
-const adminRoutes = require('./adminRoutes');
-const userRoutes = require('./userRoutes');
-const { default: mongoose } = require('mongoose');
+dotenv.config(); // Load environment variables
 
 const app = express();
-const PORT = 3000;
 
-app.use(cors());
-app.use(bodyParser.json());
+// Middleware for JSON parsing
+app.use(express.json());
 
-app.use((req, res, next) => {
-  req.user = { id: 1 }; 
-  next();
+// MongoDB connection setup - remove deprecated options
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+// Use the routes in the app
+app.use('/api/users', userRoute);  // This handles /api/users routes
+app.use('/api/admin', adminRoute);  // This handles /api/admin routes
+
+// Define the port and start the server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
-
-// Admin Routes
-app.use('/admin', adminRoutes);
-
-// User Routes
-app.use('/user', userRoutes);
-
-//DB connection
-mongoose
-.connect('mongod://127.0.0.1:27017/PRE')
-.then(() => {
-    console.log('successfuly connected');
-   app.listen(PORT, () => {
-   console.log(`Server is running on http://localhost:${PORT}`);
-});
-})
-
-
-
- 
