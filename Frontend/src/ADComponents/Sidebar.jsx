@@ -1,5 +1,10 @@
 import React from 'react';
 import {
+  DocumentCheckIcon,
+  ArchiveBoxXMarkIcon,
+  DocumentIcon,
+} from '@heroicons/react/24/outline';
+import {
   Card,
   Typography,
   List,
@@ -18,11 +23,17 @@ function Sidebar() {
         </Typography>
       </div>
       <List>
-        <ListItem onClick={() => setActiveTab('ACExpenses')}>
-          Approved Report
+        <ListItem onClick={() => setActiveTab('')}>
+          {' '}
+          <DocumentIcon className='h-6 w-6 text-gray-500 mr-2' />
+          Reports
         </ListItem>
-
-        <ListItem onClick={() => setActiveTab('LExpenses')}>
+        <ListItem onClick={() => setActiveTab('')}>
+          <DocumentCheckIcon className='h-6 w-6 text-gray-500 mr-2' />
+          Approved Reports
+        </ListItem>
+        <ListItem onClick={() => setActiveTab('')}>
+          <ArchiveBoxXMarkIcon className='h-6 w-6 text-gray-500 mr-2' />
           Rejected Reports
         </ListItem>
       </List>
