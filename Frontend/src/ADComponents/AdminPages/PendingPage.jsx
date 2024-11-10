@@ -1,6 +1,7 @@
 import React from 'react';
-import { DocumentIcon } from '@heroicons/react/24/solid';
-import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+
+import { EyeIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
+
 import {
   Card,
   CardHeader,
@@ -105,13 +106,13 @@ function ApprovePage() {
                 <td className='p-4 border-b border-gray-300'>
                   <div className='flex items-center gap-2'>
                     <IconButton variant='text' size='sm'>
-                      <DocumentIcon className='h-4 w-4 text-gray-900' />
+                      <EyeIcon class='h-6 w-6 text-gray-500' />
                     </IconButton>
                     <IconButton variant='text' size='sm'>
-                      <ArrowDownTrayIcon
-                        strokeWidth={3}
-                        className='h-4 w-4 text-gray-900'
-                      />
+                      <CheckIcon className='h-6 w-6 text-green-500' />
+                    </IconButton>
+                    <IconButton variant='text' size='sm'>
+                      <XMarkIcon className='h-6 w-6 text-red-500' />
                     </IconButton>
                   </div>
                 </td>
