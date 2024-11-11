@@ -9,7 +9,6 @@ import {
   CardFooter,
   Typography,
   Input,
-  Checkbox,
   Button,
 } from '@material-tailwind/react';
 import theme from '@material-tailwind/react/theme';
@@ -32,26 +31,6 @@ function SignIn() {
       size: 'large',
     });
   }, []);
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post('/api/login', { email, password });
-      const { token } = response.data;
-
-      // Store the token in local storage
-      localStorage.setItem('token', token);
-
-      // Redirect to admin page
-      navigate('/admin');
-    } catch (error) {
-      console.error('Login failed:', error);
-      alert('Invalid credentials');
-    }
-  };
 
   return (
     <section
