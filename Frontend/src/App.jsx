@@ -10,7 +10,8 @@ function App() {
       <Routes>
         {/* <Route path='/' element={<LandingPage />} />
         <Route path='/Main' element={<MainPage />} /> */}
-        <Route path='/' element={<AdminPage />} />
+        <Route path='/' element={<LandingPage />} />
+        <Route path="/MainPage" element={<MainPage />} /> {/* Route for MainPage */}
       </Routes>
     </Router>
   );
