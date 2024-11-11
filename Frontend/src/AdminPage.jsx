@@ -4,6 +4,7 @@ import Sidebar from './ADComponents/Sidebar';
 import Pending from './ADComponents/AdminPages/PendingPage';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
+
 function AdminPage() {
   const [activeTab, setActiveTab] = useState();
 
