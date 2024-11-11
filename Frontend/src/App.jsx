@@ -1,16 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-import LandingPage from './LandingPage';
-import MainPage from './MainPage';
-import AdminPage from './AdminPage';
+import LandingPage from './LandingPage'; // Ensure you have this import
+import AdminPage from './AdminPage'; // For example, Admin page
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* <Route path='/' element={<LandingPage />} />
-        <Route path='/Main' element={<MainPage />} /> */}
-        <Route path='/' element={<AdminPage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/admin" element={<AdminPage />} />
+        {/* Other routes */}
       </Routes>
     </Router>
   );
