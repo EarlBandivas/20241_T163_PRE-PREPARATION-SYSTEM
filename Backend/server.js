@@ -1,15 +1,14 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import cors from 'cors';  
-import userRoute from './routes/userRoute.js';
-import adminRoute from './routes/adminRoute.js'; 
+import userRoute from './routes/userRoute.js'; // Import user routes
+import adminRoute from './routes/adminRoute.js'; // Import admin routes
 
 dotenv.config(); 
 
 const app = express();
 
-// Middleware for JSON parsing
+// JSON parsing
 app.use(express.json());
 app.use(cors());  
 
@@ -19,8 +18,8 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Use the routes in the app
-app.use('/api/users', userRoute);  
-app.use('/api/admin', adminRoute);  
+app.use('/api/users', userRoute);  // This handles /api/users routes
+app.use('/api/admin', adminRoute);  // This handles /api/admin routes
 
 // Define the port and start the server
 const PORT = process.env.PORT || 5000;
