@@ -1,44 +1,43 @@
 import Admin from '../models/adminModel.js';
+import User from '../models/userModel.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import Department from '../models/departmentModel.js';
 
 
 
 
-// Create a new admin
-export const createAdmin = async (req, res) => {
+// Create a new user
+export const createUser = async (req, res) => {
   try {
-    const { username, password, email } = req.body;
+    const { email, password, role } = req.body;
 
     // Check for missing fields
-    if (!username || !password || !email) {
-      return res.status(400).json({ message: 'All fields are required' });
+    if (!email || !password || !role) {
+      return res.status(400).json({ message: 'Email, password, and role are required' });
     }
 
-    // Check if admin already exists
-    const existingAdmin = await Admin.findOne({ email });
-    if (existingAdmin) {
-      return res.status(400).json({ message: 'Admin with this email already exists' });
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User with this email already exists' });
     }
 
-    // Hash the password before saving
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // // Hash the password before saving
+     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new admin with the hashed password
-    const newAdmin = new Admin({
-      username,
-      password: hashedPassword,
+   // Create a new user with the hashed password
+    const newUser = new User({
       email,
-      role: 'admin'
+      password: hashedPassword,
+      role,
     });
 
-    await newAdmin.save();
+    await newUser.save();
 
-    res.status(201).json({ message: 'Admin created successfully', admin: newAdmin });
+    res.status(201).json({ message: 'User created successfully', user: newUser });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error creating admin', error: error.message });
+    res.status(500).json({ message: 'Error creating user', error: error.message });
   }
 };
 
@@ -68,42 +67,45 @@ export const loginAdmin = async (req, res) => {
       return res.status(404).json({ message: 'Admin not found' });
     }
 
-    // Compare the password
+    // Check if the password is correct
     const isPasswordValid = await bcrypt.compare(password, admin.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Incorrect password' });
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    // Generate JWT token
+    // Create a JWT token
     const token = jwt.sign(
-      { id: admin._id, email: admin.email, role: admin.role },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      {
+        id: admin._id,
+        role: 'admin',
+      },
+      process.env.JWT_SECRET, // Ensure you have this environment variable configured
+      {
+        expiresIn: '1h', // Token expiration time
+      }
     );
 
+    // Respond with the token and admin details
     res.status(200).json({
-      message: 'Admin logged in successfully',
+      message: 'Login successful',
       token,
-      admin: { id: admin._id, email: admin.email, role: admin.role },
+      role: 'admin',
+      admin: {
+        id: admin._id,
+        name: admin.name,
+        email: admin.email,
+      },
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error during login', error: error.message });
+    console.error('Error during admin login:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
-
 // Create a new department
-export const createDepartment = async (req, res) => {
+export const createDepartment = (req, res) => {
   try {
-    const { name, description } = req.body;
-
-    if (!name) {
-      return res.status(400).json({ message: 'Department name is required' });
-    }
-
-    const newDepartment = new Department({ name, description });
-    await newDepartment.save();
-
+    const newDepartment = { id: departments.length + 1, ...req.body };
+    departments.push(newDepartment);
     res.status(201).json({ message: 'Department created successfully', department: newDepartment });
   } catch (error) {
     console.error(error);
@@ -171,5 +173,4 @@ export const logoutAdmin = (req, res) => {
     res.status(500).json({ message: 'Error during logout', error: error.message });
   }
 };
-
 
