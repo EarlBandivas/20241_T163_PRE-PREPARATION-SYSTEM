@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReCAPTCHA from 'react-google-recaptcha';
+import GoogleAuthButton from '../LPComponents/googleAuthButton';
 import {
   Card,
   CardHeader,
@@ -28,55 +29,60 @@ const SignIn = () => {
     setIsCaptchaVerified(true);
   };
 
-  const google = window.google;
-  const handleCallbackResponse = (response) => {
-    console.log('Encoded JWT ID token: ', response.credential);
-  };
+  // const google = window.google;
+  // const handleCallbackResponse = (response) => {
+  //   console.log('Encoded JWT ID token: ', response.credential);
+  // };
 
-  useEffect(() => {
-    google.accounts.id.initialize({
-      client_id:
-        '739038621196-uol95im9plo5d3nbi2mh6mbkqt6ihi5a.apps.googleusercontent.com',
-      callback: handleCallbackResponse,
-    });
-    google.accounts.id.renderButton(document.getElementById('signin-in-div'), {
-      theme: 'outlined',
-      size: 'large',
-    });
-  }, []);
-
+  // useEffect(() => {
+  //   google.accounts.id.initialize({
+  //     client_id:
+  //       '739038621196-uol95im9plo5d3nbi2mh6mbkqt6ihi5a.apps.googleusercontent.com',
+  //     callback: handleCallbackResponse,
+  //   });
+  //   google.accounts.id.renderButton(document.getElementById('signin-in-div'), {
+  //     theme: 'outlined',
+  //     size: 'large',
+  //   });
+  // }, []);
 
   // Sign in function with role-based navigation
   const handleSignin = async (e) => {
     e.preventDefault();
     setMessage('');
     setIsLoading(true);
-  
+
     try {
       // Use the appropriate endpoint based on login type (admin or user)
-      const loginEndpoint = email.includes('admin') ? 'http://localhost:5000/admin/login' : 'http://localhost:5000/users/login';
-  
+      const loginEndpoint = email.includes('admin')
+        ? 'http://localhost:5000/admin/login'
+        : 'http://localhost:5000/users/login';
+
       // Send login request to the backend
       const response = await axios.post(loginEndpoint, {
         email,
         password,
       });
-  
+
       if (response.data && response.data.token && response.data.role) {
         localStorage.setItem('token', response.data.token); // Store token in localStorage
-  
+
         // Redirect based on role
         if (response.data.role === 'admin') {
           setMessage('Admin login successful! Redirecting...');
-          toast.success('Admin login successful! Redirecting...', { autoClose: 1500 });
+          toast.success('Admin login successful! Redirecting...', {
+            autoClose: 1500,
+          });
           setTimeout(() => {
             navigate('/admin'); // Redirect to AdminPage
           }, 1500);
         } else if (response.data.role === 'user') {
           setMessage('User login successful! Redirecting...');
-          toast.success('User login successful! Redirecting...', { autoClose: 1500 });
+          toast.success('User login successful! Redirecting...', {
+            autoClose: 1500,
+          });
           setTimeout(() => {
-            navigate('/user'); // Redirect to MainPage
+            navigate('/users'); // Redirect to MainPage
           }, 1500);
         } else {
           setMessage('Unknown role. Please contact support.');
@@ -88,29 +94,43 @@ const SignIn = () => {
       }
     } catch (error) {
       if (error.response) {
-        setMessage(`Login failed: ${error.response.data.message || 'Invalid credentials'}`);
+        setMessage(
+          `Login failed: ${error.response.data.message || 'Invalid credentials'}`
+        );
         toast.error('Incorrect email or password. Please try again.');
       } else {
         setMessage('Login failed: Unable to connect to the server');
-        toast.error('Unable to connect to the server. Please check your network and try again.');
+        toast.error(
+          'Unable to connect to the server. Please check your network and try again.'
+        );
       }
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
-  
+
+  const handleGoogleLoginSuccess = (token) => {
+    console.log('Google Login successful:', token);
+  };
 
   return (
     <>
       <ToastContainer />
-      <section className='grid max-w-screen-xl gap-8 md:grid-cols-2 md:items-center md:text-left px-10 py-5 mx-auto' id='signIn'>
+      <section
+        className='grid max-w-screen-xl gap-8 md:grid-cols-2 md:items-center md:text-left px-10 py-5 mx-auto'
+        id='signIn'
+      >
         <div className='border-blue-400 flex justify-center'>
           <img className='w-full h-full rounded-lg' src={Logo} alt='Logo' />
         </div>
 
         <div className='md:pt-28 md:flex justify-center'>
           <Card className='w-96'>
-            <CardHeader variant='gradient' color='blue' className='mb-4 grid h-16 place-items-center'>
+            <CardHeader
+              variant='gradient'
+              color='blue'
+              className='mb-4 grid h-16 place-items-center'
+            >
               <Typography variant='h3' color='white'>
                 Sign In
               </Typography>
@@ -145,14 +165,16 @@ const SignIn = () => {
                     onChange={onChange}
                     required
                   />
-                  <Button variant='gradient' color='blue' fullWidth type='submit' disabled={isLoading || !isCaptchaVerified}>
+                  <Button
+                    variant='gradient'
+                    color='blue'
+                    fullWidth
+                    type='submit'
+                    disabled={isLoading || !isCaptchaVerified}
+                  >
                     {isLoading ? 'Signing In...' : 'Sign In'}
                   </Button>
-                  <div id='signin-in-div'></div>
-                  {/* <Button size='sm' variant='outlined' color='blue' className='flex justify-center items-center gap-3' fullWidth>
-                    <img src='https://docs.material-tailwind.com/icons/google.svg' alt='Google' className='h-6 w-6' />
-                    Continue with Google
-                  </Button> */}
+                  <GoogleAuthButton onLoginSuccess={handleGoogleLoginSuccess} />
                 </div>
               </CardFooter>
             </form>
