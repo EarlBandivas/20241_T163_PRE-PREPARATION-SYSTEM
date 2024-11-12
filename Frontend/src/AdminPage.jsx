@@ -1,13 +1,13 @@
+// src/components/AdminPage.jsx
+
 import React, { useState } from 'react';
 import Header from './ADComponents/Header';
 import Sidebar from './ADComponents/Sidebar';
 import Pending from './ADComponents/AdminPages/PendingPage';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-
 function AdminPage() {
   const [activeTab, setActiveTab] = useState();
-
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
@@ -16,11 +16,11 @@ function AdminPage() {
     switch (activeTab) {
       case 'ACExpenses':
         return <Pending />;
-
       default:
         return <Pending />;
     }
   };
+
   return (
     <>
       <Header />
@@ -38,14 +38,13 @@ function AdminPage() {
         >
           <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
-
         <div className='flex-1 p-6 overflow-y-auto bg-white text-black'>
           <button
             className='lg:hidden p-2 bg-blue-500 text-white rounded mb-4'
             onClick={toggleSidebar}
           >
             {isSidebarOpen ? (
-              'Close Menu'
+              <XMarkIcon className='h-8 w-8 stroke-2' />
             ) : (
               <Bars3Icon className='h-8 w-8 stroke-2' />
             )}
