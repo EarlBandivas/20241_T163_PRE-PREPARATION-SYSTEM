@@ -20,8 +20,8 @@ mongoose
   .catch((err) => console.error('MongoDB connection error:', err));
 
 // Use the routes in the app
-app.use('/api/users', userRoute);
-app.use('/api/admin', adminRoute);
+app.use('/users', userRoute);  
+app.use('/admin', adminRoute);  
 
 // Define the port and start the server
 const PORT = process.env.PORT || 5000;
