@@ -41,7 +41,7 @@
           toast.success('Login successful! Redirecting...', { autoClose: 1500 });
     
           setTimeout(() => {
-            navigate('/MainPage'); // Redirect to MainPage after successful login
+            navigate('/admin'); // Redirect to MainPage after successful login
           }, 1500);
         } else {
           setMessage('Login failed: Token not received');
