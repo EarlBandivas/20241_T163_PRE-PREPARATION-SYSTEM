@@ -1,15 +1,44 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom'; 
 import {
   Navbar,
   Typography,
   IconButton,
   Button,
   Input,
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
 } from '@material-tailwind/react';
-import { BellIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
+import { BellIcon, Cog6ToothIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
+
+
 
 function Header() {
+
+  const navigate = useNavigate(); 
+
+
+  const handleLogout = async () => {
+    try {
+      // Call the backend logout endpoint (optional, but good practice)
+      await fetch('/logout', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      });
+
+      // Remove the token from localStorage
+      localStorage.removeItem('authToken');
+
+      // Redirect to LandingPage (or root '/' route)
+      navigate('/'); // Navigating to the LandingPage (or root URL)
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
   return (
     <Navbar
       variant='gradient'
@@ -32,6 +61,17 @@ function Header() {
           <IconButton variant='text' color='white'>
             <BellIcon className='h-4 w-4' />
           </IconButton>
+          <Menu>
+              <MenuHandler>
+                <IconButton variant='text' color='white'>
+                  <ChevronDownIcon className='h-4 w-4' />
+                </IconButton>
+              </MenuHandler>
+              <MenuList>
+
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </MenuList>
+            </Menu>
         </div>
       </div>
     </Navbar>
