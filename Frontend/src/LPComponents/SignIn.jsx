@@ -45,6 +45,7 @@ const SignIn = () => {
     });
   }, []);
 
+
   // Sign in function with role-based navigation
   const handleSignin = async (e) => {
     e.preventDefault();
@@ -135,7 +136,6 @@ const SignIn = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <Checkbox label='Remember Me' color='blue' />
               </CardBody>
 
               <CardFooter className='pt-1'>
