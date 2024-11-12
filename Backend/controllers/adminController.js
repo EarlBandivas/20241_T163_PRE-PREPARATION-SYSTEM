@@ -1,6 +1,8 @@
 import Admin from '../models/adminModel.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import Department from '../models/departmentModel.js';
+
 
 
 
@@ -91,10 +93,17 @@ export const loginAdmin = async (req, res) => {
 };
 
 // Create a new department
-export const createDepartment = (req, res) => {
+export const createDepartment = async (req, res) => {
   try {
-    const newDepartment = { id: departments.length + 1, ...req.body };
-    departments.push(newDepartment);
+    const { name, description } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ message: 'Department name is required' });
+    }
+
+    const newDepartment = new Department({ name, description });
+    await newDepartment.save();
+
     res.status(201).json({ message: 'Department created successfully', department: newDepartment });
   } catch (error) {
     console.error(error);
@@ -162,4 +171,5 @@ export const logoutAdmin = (req, res) => {
     res.status(500).json({ message: 'Error during logout', error: error.message });
   }
 };
+
 
