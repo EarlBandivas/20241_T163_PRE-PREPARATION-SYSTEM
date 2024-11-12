@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from '../assets/BuksuLogo.png';
 import { useEffect } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import {
   Card,
@@ -13,9 +14,13 @@ import {
 } from '@material-tailwind/react';
 import theme from '@material-tailwind/react/theme';
 
+// 6Lce83sqAAAAAKUirGeypESF-y4Ngy00yLY7I49R
 function SignIn() {
-  const google = window.google;
+  const onChange = () => {
+    setIsCaptchaVerified(true);
+  };
 
+  const google = window.google;
   const handleCallbackResponse = (response) => {
     console.log('Encoded JWT ID token: ', response.credential);
   };
@@ -53,30 +58,34 @@ function SignIn() {
               Sign In
             </Typography>
           </CardHeader>
-          <CardBody className='flex flex-col gap-4'>
+          <CardBody className='flex flex-col gap-3'>
             <Input
+              type='email'
               label='Email'
               size='lg'
               color='blue'
               onChange={(e) => setEmail(e.target.value)}
             />
             <Input
+              type='password'
               label='Password'
               size='lg'
               color='blue'
               onChange={(e) => setPassword(e.target.value)}
             />
-            {/* <div className='-ml-2.5' color='blue'>
-              <Checkbox label='Remember Me' color='blue' />
-            </div> */}
           </CardBody>
           <CardFooter className='pt-1 '>
             <div className='flex flex-col items-center gap-4'>
+              <ReCAPTCHA
+                sitekey='6Lce83sqAAAAAKUirGeypESF-y4Ngy00yLY7I49R'
+                onChange={onChange}
+                required
+              />
               <Button
                 variant='gradient'
                 color='blue'
                 fullWidth
-                onClick={handleLogin}
+                // onClick={handleLogin}
               >
                 Sign In
               </Button>
