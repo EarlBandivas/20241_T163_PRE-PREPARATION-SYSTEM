@@ -30,7 +30,7 @@
     
       try {
         // Send login request to backend
-        const response = await axios.post('http://localhost:5000/api/admin/login', {
+        const response = await axios.post('http://localhost:5000/admin/login', {
           email,
           password,
         });
