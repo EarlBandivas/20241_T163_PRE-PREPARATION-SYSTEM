@@ -2,14 +2,23 @@ import Admin from '../models/adminModel.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-let departments = [];
-let preReports = [];
-let budgets = [];
+
 
 // Create a new admin
 export const createAdmin = async (req, res) => {
   try {
     const { username, password, email } = req.body;
+
+    // Check for missing fields
+    if (!username || !password || !email) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    // Check if admin already exists
+    const existingAdmin = await Admin.findOne({ email });
+    if (existingAdmin) {
+      return res.status(400).json({ message: 'Admin with this email already exists' });
+    }
 
     // Hash the password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -19,7 +28,7 @@ export const createAdmin = async (req, res) => {
       username,
       password: hashedPassword,
       email,
-      role: 'admin' // Ensure 'role' is set if needed
+      role: 'admin'
     });
 
     await newAdmin.save();
@@ -37,6 +46,7 @@ export const getAllAdmins = async (req, res) => {
     const admins = await Admin.find();
     res.status(200).json(admins);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Error fetching admins', error: error.message });
   }
 };
@@ -59,7 +69,7 @@ export const loginAdmin = async (req, res) => {
     // Compare the password
     const isPasswordValid = await bcrypt.compare(password, admin.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Incorrect or wrong password' });
+      return res.status(401).json({ message: 'Incorrect password' });
     }
 
     // Generate JWT token
@@ -82,34 +92,74 @@ export const loginAdmin = async (req, res) => {
 
 // Create a new department
 export const createDepartment = (req, res) => {
-  const newDepartment = { id: departments.length + 1, ...req.body };
-  departments.push(newDepartment);
-  res.status(201).json(newDepartment);
+  try {
+    const newDepartment = { id: departments.length + 1, ...req.body };
+    departments.push(newDepartment);
+    res.status(201).json({ message: 'Department created successfully', department: newDepartment });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error creating department', error: error.message });
+  }
 };
 
 // Get submitted reports
 export const getSubmittedReports = (req, res) => {
-  const submittedReports = preReports.filter((report) => report.status === 'Submitted');
-  res.status(200).json(submittedReports);
+  try {
+    const submittedReports = preReports.filter((report) => report.status === 'Submitted');
+    res.status(200).json(submittedReports);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching submitted reports', error: error.message });
+  }
 };
 
 // Approve a report
 export const approveReport = (req, res) => {
-  const report = preReports.find((report) => report.id === parseInt(req.params.id));
-  if (!report) return res.status(404).json({ message: 'Report not found' });
+  try {
+    const report = preReports.find((report) => report.id === parseInt(req.params.id));
+    if (!report) {
+      return res.status(404).json({ message: 'Report not found' });
+    }
 
-  report.status = 'Approved';
-  res.status(200).json({ message: 'Report approved', report });
+    report.status = 'Approved';
+    res.status(200).json({ message: 'Report approved', report });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error approving report', error: error.message });
+  }
 };
 
 // Get all budgets
 export const getBudgets = (req, res) => {
-  res.status(200).json(budgets);
+  try {
+    res.status(200).json(budgets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching budgets', error: error.message });
+  }
 };
 
 // Get a specific budget by ID
 export const getBudgetById = (req, res) => {
-  const budget = budgets.find((b) => b.id === parseInt(req.params.id));
-  if (!budget) return res.status(404).json({ message: 'Budget not found' });
-  res.status(200).json(budget);
+  try {
+    const budget = budgets.find((b) => b.id === parseInt(req.params.id));
+    if (!budget) {
+      return res.status(404).json({ message: 'Budget not found' });
+    }
+    res.status(200).json(budget);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching budget', error: error.message });
+  }
 };
+
+// Admin logout
+export const logoutAdmin = (req, res) => {
+  try {
+    res.status(200).json({ message: 'Logged out successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error during logout', error: error.message });
+  }
+};
+
