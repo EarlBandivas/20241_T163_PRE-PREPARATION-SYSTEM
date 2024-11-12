@@ -5,6 +5,11 @@ import Sidebar from './MPComponents/Sidebar';
 import ACExpenses from './MPComponents/SidebarPages/ACExpenses';
 import LExpenses from './MPComponents/SidebarPages/LExpenses';
 import MDExpenses from './MPComponents/SidebarPages/MDExpenses';
+import DFExpenses from './MPComponents/SidebarPages/DFExpenses';
+import CExpenses from './MPComponents/SidebarPages/CExpenses';
+import FD from './MPComponents/SidebarPages/FD';
+import CD from './MPComponents/SidebarPages/CD';
+import SD from './MPComponents/SidebarPages/SD';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 function MainPage() {
@@ -22,6 +27,16 @@ function MainPage() {
         return <LExpenses />;
       case 'MDExpenses':
         return <MDExpenses />;
+      case 'CExpenses':
+        return <CExpenses />;
+      case 'DFExpenses':
+        return <DFExpenses />;
+      case 'facultyDevelopment':
+        return <FD />;
+      case 'curriculumDevelopment':
+        return <CD />;
+      case 'studentDevelopment':
+        return <SD />;
       default:
         return <ACExpenses />;
     }
