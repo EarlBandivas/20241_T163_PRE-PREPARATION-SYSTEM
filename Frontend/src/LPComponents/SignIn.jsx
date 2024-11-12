@@ -28,6 +28,23 @@ const SignIn = () => {
     setIsCaptchaVerified(true);
   };
 
+  const google = window.google;
+  const handleCallbackResponse = (response) => {
+    console.log('Encoded JWT ID token: ', response.credential);
+  };
+
+  useEffect(() => {
+    google.accounts.id.initialize({
+      client_id:
+        '739038621196-uol95im9plo5d3nbi2mh6mbkqt6ihi5a.apps.googleusercontent.com',
+      callback: handleCallbackResponse,
+    });
+    google.accounts.id.renderButton(document.getElementById('signin-in-div'), {
+      theme: 'outlined',
+      size: 'large',
+    });
+  }, []);
+
   // Sign in function with role-based navigation
   const handleSignin = async (e) => {
     e.preventDefault();
@@ -131,10 +148,11 @@ const SignIn = () => {
                   <Button variant='gradient' color='blue' fullWidth type='submit' disabled={isLoading || !isCaptchaVerified}>
                     {isLoading ? 'Signing In...' : 'Sign In'}
                   </Button>
-                  <Button size='sm' variant='outlined' color='blue' className='flex justify-center items-center gap-3' fullWidth>
+                  <div id='signin-in-div'></div>
+                  {/* <Button size='sm' variant='outlined' color='blue' className='flex justify-center items-center gap-3' fullWidth>
                     <img src='https://docs.material-tailwind.com/icons/google.svg' alt='Google' className='h-6 w-6' />
                     Continue with Google
-                  </Button>
+                  </Button> */}
                 </div>
               </CardFooter>
             </form>
