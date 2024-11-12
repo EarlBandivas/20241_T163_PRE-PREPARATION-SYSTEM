@@ -2,7 +2,7 @@
 import express from 'express';
 import {
   loginAdmin,
-  createDepartment,
+  //createDepartment,
   getSubmittedReports,
   approveReport,
   getBudgets,
