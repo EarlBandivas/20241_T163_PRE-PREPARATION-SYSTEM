@@ -1,3 +1,4 @@
+// routes/adminRoutes.js
 import express from 'express';
 import {
   loginAdmin,
@@ -10,7 +11,8 @@ import {
   createUser,
   logoutAdmin,
 } from '../controllers/adminController.js';
-import { authenticateToken } from './middleware.js';
+
+import Admin from '../models/adminModel.js';
 
 const router = express.Router();
 
