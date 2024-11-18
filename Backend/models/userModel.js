@@ -1,21 +1,13 @@
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema(
-  {
-    password: { type: String, required: true },
-    role: { type: String, enum: ['admin', 'user'], default: 'user' },
-    email: { 
-      type: String, 
-      required: true, 
-      unique: true,  // Ensures email is unique in the database
-      match: [/^\S+@\S+\.\S+$/, 'Please use a valid email address'], // Email format validation
-    },
-  },
-  {
-    timestamps: true, // Adds createdAt and updatedAt fields automatically
-  }
-);
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: false },
+  role: { type: String, default: 'user' },
+  isVerified: { type: Boolean, default: false },
+  verificationToken: { type: String, default: null },
+  hasSetPassword: { type: Boolean, default: false },
+});
 
 const User = mongoose.model('User', userSchema);
-
 export default User;

@@ -2,14 +2,6 @@ import React, { useState } from 'react';
 
 import Header from './MPComponents/Header';
 import Sidebar from './MPComponents/Sidebar';
-import ACExpenses from './MPComponents/SidebarPages/ACExpenses';
-import LExpenses from './MPComponents/SidebarPages/LExpenses';
-import MDExpenses from './MPComponents/SidebarPages/MDExpenses';
-import DFExpenses from './MPComponents/SidebarPages/DFExpenses';
-import CExpenses from './MPComponents/SidebarPages/CExpenses';
-import FD from './MPComponents/SidebarPages/FD';
-import CD from './MPComponents/SidebarPages/CD';
-import SD from './MPComponents/SidebarPages/SD';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 function MainPage() {
@@ -18,29 +10,6 @@ function MainPage() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'ACExpenses':
-        return <ACExpenses />;
-      case 'LExpenses':
-        return <LExpenses />;
-      case 'MDExpenses':
-        return <MDExpenses />;
-      case 'CExpenses':
-        return <CExpenses />;
-      case 'DFExpenses':
-        return <DFExpenses />;
-      case 'facultyDevelopment':
-        return <FD />;
-      case 'curriculumDevelopment':
-        return <CD />;
-      case 'studentDevelopment':
-        return <SD />;
-      default:
-        return <ACExpenses />;
-    }
-  };
 
   return (
     <>
@@ -71,7 +40,6 @@ function MainPage() {
               <Bars3Icon className='h-8 w-8 stroke-2' />
             )}
           </button>
-          {renderContent()}
         </div>
       </div>
     </>

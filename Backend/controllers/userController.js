@@ -3,14 +3,15 @@ import User from '../models/userModel.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     // Check if email and password are provided
     if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' });
+      return res
+        .status(400)
+        .json({ message: 'Email and password are required' });
     }
 
     // Find the user by email
@@ -44,8 +45,6 @@ export const loginUser = async (req, res) => {
   }
 };
 
-
-
 export const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id); // Find user by ID
@@ -77,4 +76,50 @@ export const getPendingReports = (req, res) => {
   // Example of fetching pending reports for a user
   const pendingReports = [{ id: 1, status: 'Submitted' }];
   res.status(200).json(pendingReports);
+};
+
+export const authenticateGoogleUser = async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log('Received login attempt from:', email);
+
+    // Find user by email
+    const testUser = await User.findOne({ email });
+    console.log('Found user:', testUser);
+
+    if (!testUser) {
+      return res.status(404).json({
+        error: 'User not found. Please use registered test account.',
+      });
+    }
+
+    if (testUser.role !== 'user') {
+      return res.status(403).json({
+        error: 'Invalid role. Access denied.',
+      });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        id: testUser._id,
+        role: testUser.role,
+        email: testUser.email,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    return res.status(200).json({
+      token,
+      user: {
+        id: testUser._id,
+        email: testUser.email,
+        role: testUser.role,
+      },
+    });
+  } catch (error) {
+    console.error('Auth error:', error);
+    return res.status(500).json({ error: error.message });
+  }
 };
