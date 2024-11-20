@@ -1,24 +1,25 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
 import {
   Navbar,
   Typography,
   IconButton,
-  Button,
-  Input,
   Menu,
   MenuHandler,
   MenuList,
   MenuItem,
 } from '@material-tailwind/react';
-import { BellIcon, Cog6ToothIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
-
-
+import {
+  BellIcon,
+  Cog6ToothIcon,
+  ChevronDownIcon,
+  CalendarIcon,
+} from '@heroicons/react/24/solid';
+import CalendarModal from './SidebarPages/CalendarModal';
 
 function Header() {
-
-  const navigate = useNavigate(); 
-
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -39,6 +40,17 @@ function Header() {
       console.error('Error logging out:', error);
     }
   };
+
+  const [isCalendarModalOpen, setCalendarModalOpen] = useState(false);
+
+  const handleOpenCalendarModal = () => {
+    setCalendarModalOpen(true);
+  };
+
+  const handleCloseCalendarModal = () => {
+    setCalendarModalOpen(false);
+  };
+
   return (
     <Navbar
       variant='gradient'
@@ -55,6 +67,18 @@ function Header() {
           PRE-Preparations
         </Typography>
         <div className='ml-auto flex gap-1 md:mr-4'>
+          <IconButton
+            variant='text'
+            color='white'
+            onClick={handleOpenCalendarModal}
+          >
+            <CalendarIcon className='h-4 w-4' color='white' />
+          </IconButton>
+
+          <CalendarModal
+            isOpen={isCalendarModalOpen}
+            onClose={handleCloseCalendarModal}
+          />
           <IconButton variant='text' color='white'>
             <Cog6ToothIcon className='h-4 w-4' />
           </IconButton>
@@ -62,16 +86,15 @@ function Header() {
             <BellIcon className='h-4 w-4' />
           </IconButton>
           <Menu>
-              <MenuHandler>
-                <IconButton variant='text' color='white'>
-                  <ChevronDownIcon className='h-4 w-4' />
-                </IconButton>
-              </MenuHandler>
-              <MenuList>
-
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-              </MenuList>
-            </Menu>
+            <MenuHandler>
+              <IconButton variant='text' color='white'>
+                <ChevronDownIcon className='h-4 w-4' />
+              </IconButton>
+            </MenuHandler>
+            <MenuList>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </MenuList>
+          </Menu>
         </div>
       </div>
     </Navbar>
