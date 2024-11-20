@@ -15,18 +15,32 @@ import {
   DialogBody,
   DialogFooter,
   Input,
+  Alert,
 } from '@material-tailwind/react';
 import { BellIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
 
 function Header() {
   const [size, setSize] = useState(null);
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('user'); // Default role is 'user'
+  //const [password, setPassword] = useState('');
+  //const [role, setRole] = useState('user');
   const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate for redirection
-
+  const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertColor, setAlertColor] = useState('');
   const handleOpen = (value) => setSize(value);
+  const [showEmailAlert, setEmailShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const triggerAlert = (message, color) => {
+    setSuccessMessage(message);
+    setAlertColor(color);
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000); // Hide alert after 3 seconds
+  };
 
   // Logout handler
   const handleLogout = async () => {
@@ -49,7 +63,6 @@ function Header() {
     }
   };
 
-  // Create User handler
   // const handleCreateUser = async () => {
   //   if (!email || !password || !role) {
   //     setErrorMessage('Email, password, and role are required');
@@ -87,21 +100,20 @@ function Header() {
     try {
       const res = await axios.post('http://localhost:5000/admin/add', {
         email,
-      }); // Ensure the backend endpoint is correct
-
-      // Check if the response is successful
+      });
       console.log('User created:', res.data);
-
-      // Handle success
-      alert('User created and verification email sent!');
-      handleOpen(null); // Close the dialog
-      setEmail(''); // Clear the email input
-      setErrorMessage(''); // Clear any previous error messages
+      triggerAlert('User created and verification email sent!', 'green');
+      handleOpen(null);
+      setEmail('');
     } catch (error) {
+      triggerAlert('User is already existed', 'red');
       console.error('Error creating user:', error);
       setErrorMessage(
         error.response?.data?.message || 'Failed to create user.'
       );
+    } finally {
+      handleOpen(null);
+      setEmail('');
     }
   };
 
@@ -142,6 +154,14 @@ function Header() {
         </div>
       </Navbar>
 
+      {showAlert && (
+        <div className='fixed top-4 left-1/2 transform -translate-x-1/2 w-auto text-center z-50 '>
+          <Alert color={alertColor} className='text-center'>
+            {successMessage}
+          </Alert>
+        </div>
+      )}
+
       <Dialog
         open={size === 'xs'}
         size={size || 'xs'}
@@ -150,18 +170,33 @@ function Header() {
       >
         <DialogHeader>Create a User Account</DialogHeader>
         <DialogBody>
-          <div className='w-72 m-4'>
-            <Input
-              label='Email Address'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter user's email"
-            />
-          </div>
-          {errorMessage && (
-            <p className='text-red-500 text-sm'>{errorMessage}</p>
+          {showEmailAlert && (
+            <Alert
+              color='red'
+              variant='filled'
+              animate={{
+                mount: { y: 0 },
+                unmount: { y: 100 },
+              }}
+              onClose={() => setEmailShowAlert(false)}
+              className='mb-4'
+            >
+              {alertMessage}
+            </Alert>
           )}
+          <form onSubmit={(e) => e.preventDefault()}>
+            <div className='w-72 m-4'>
+              <Input
+                label='Email Address'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter user's email"
+                required
+              />
+            </div>
+          </form>
         </DialogBody>
+
         <DialogFooter>
           <Button
             variant='text'
@@ -171,7 +206,22 @@ function Header() {
           >
             <span>Cancel</span>
           </Button>
-          <Button variant='gradient' color='green' onClick={handleCreateUser}>
+          <Button
+            variant='gradient'
+            color='green'
+            onClick={() => {
+              if (!email.trim()) {
+                setAlertMessage('Please enter an email address');
+                return;
+              }
+              if (email.trim().length <= 10) {
+                setAlertMessage('Invalid Email');
+                setEmailShowAlert(true);
+                return;
+              }
+              handleCreateUser();
+            }}
+          >
             <span>Create User</span>
           </Button>
         </DialogFooter>
