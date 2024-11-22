@@ -29,23 +29,6 @@ const SignIn = () => {
     setIsCaptchaVerified(true);
   };
 
-  // const google = window.google;
-  // const handleCallbackResponse = (response) => {
-  //   console.log('Encoded JWT ID token: ', response.credential);
-  // };
-
-  // useEffect(() => {
-  //   google.accounts.id.initialize({
-  //     client_id:
-  //       '739038621196-uol95im9plo5d3nbi2mh6mbkqt6ihi5a.apps.googleusercontent.com',
-  //     callback: handleCallbackResponse,
-  //   });
-  //   google.accounts.id.renderButton(document.getElementById('signin-in-div'), {
-  //     theme: 'outlined',
-  //     size: 'large',
-  //   });
-  // }, []);
-
   // Sign in function with role-based navigation
   const handleSignin = async (e) => {
     e.preventDefault();
@@ -145,7 +128,7 @@ const SignIn = () => {
                   type='email'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
+                  // required
                 />
                 <Input
                   label='Password'
@@ -154,7 +137,7 @@ const SignIn = () => {
                   type='password'
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
+                  // required
                 />
               </CardBody>
 
@@ -174,10 +157,10 @@ const SignIn = () => {
                   >
                     {isLoading ? 'Signing In...' : 'Sign In'}
                   </Button>
-                  <GoogleAuthButton onLoginSuccess={handleGoogleLoginSuccess} />
                 </div>
               </CardFooter>
             </form>
+            <GoogleAuthButton onLoginSuccess={handleGoogleLoginSuccess} />
           </Card>
         </div>
       </section>

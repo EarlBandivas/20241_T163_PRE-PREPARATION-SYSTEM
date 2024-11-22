@@ -106,7 +106,7 @@ function ApprovePage() {
                 <td className='p-4 border-b border-gray-300'>
                   <div className='flex items-center gap-2'>
                     <IconButton variant='text' size='sm'>
-                      <EyeIcon class='h-6 w-6 text-gray-500' />
+                      <EyeIcon className='h-6 w-6 text-gray-500' />
                     </IconButton>
                     <IconButton variant='text' size='sm'>
                       <CheckIcon className='h-6 w-6 text-green-500' />
